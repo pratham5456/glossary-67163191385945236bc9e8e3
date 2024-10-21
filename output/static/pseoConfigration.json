@@ -1,0 +1,64 @@
+{
+  "projectName": "{{ProjectName}}",
+  "jsonFilePath": "./input.json",
+  "baseUrl": "https://examplecompany.com",
+  "portalHeading": "CyberSecurity Glossary",
+  "portalDescription": "A comprehensive resource for cybersecurity definitions and concepts.",
+  "portalTitle": "CybeGloss - Your Cybersecurity Glossary",
+  "searchPlaceholder": "Search for terms...",
+  "useAlphabetsCategory": true,
+  "homeLink": "https://examplecompany.com/",
+  "logoLink": "/",
+  "ctaText": "Get Started",
+  "aboutLink": " https://examplecompany.com/about",
+  "productsLink": " https://examplecompany.com/products",
+  "logoImgUrl": "https://examplecompany.com/images/logo.svg",
+  "ctaLink": "https://examplecompany.com/auth",
+  "copyrightText": "\u00a9 Copyright 2022 - 2023 company.",
+  "faviconUrl": "https://examplecompany.com/images/favicon.ico",
+  "googleTagManagerId": "GTM-MB8NQN6",
+  "pagesTitle": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "categoryPagesTitle": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "templateRoot": ["./templates", "./templates"],
+  "homeTemplatePath": "./templates/homePageTemplate.ejs",
+  "categoryTemplatePath": "./templates/categoryTemplate.ejs",
+  "pageTemplatePath": "./templates/pagesTemplate.ejs",
+  "outputDir": "./output",
+  "socialLinks": [
+    {
+      "platform": "Twitter",
+      "url": "https://twitter.com/examplecompany"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/examplecompany"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/example_company/"
+    }
+  ],
+  "theme": {
+    "primaryColor": "#6a4dff",
+    "secondaryColor": "#f3f4f6",
+    "backgroundColor": "#ffffff",
+    "textColor": "#111827",
+    "accentColor": "#fbbf24"
+  },
+  "fonts": [
+    {
+      "family": "Inter",
+      "weights": [400, 500, 600]
+    },
+    {
+      "family": "Poppins",
+      "weights": [500, 600, 700]
+    }
+  ]
+}

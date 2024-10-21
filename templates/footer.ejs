@@ -1,0 +1,173 @@
+<footer>
+    <div>
+        <div class="left-block">
+            <div class="logo">
+                <a href="<%= logoLink %>">
+                    <img src="<%= logoImgUrl %>" height="40" alt="<%= projectName %> Logo" />
+                </a>
+            </div>
+            <div class="copyright">
+                <%- copyrightText %>
+            </div>
+        </div>
+        <div class="footer-content">
+            <nav class="footer-nav">
+                <ul>
+                    <% if (socialLinks && socialLinks.length> 0) { %>
+                        <% socialLinks.forEach(function(social) { %>
+                            <li>
+                                <a href="<%= social.url %>" target="_blank" rel="noopener noreferrer">
+                                    <%= social.platform %>
+                                </a>
+                            </li>
+                            <% }); %>
+                                <% } %>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</footer>
+
+<script>
+    let scrollpos = window.scrollY;
+    const header = document.querySelector("header");
+    const navItems = document.querySelectorAll("nav .menu-item-has-children>a"); // Adjust the selector based on your menu items
+    const navSubItems = document.querySelectorAll("nav .menu-item-has-children .sub-menu.mega-menu"); // Adjust the selector based on your menu items
+
+    const add_class_on_scroll = () => header.classList.add("scroll");
+    const remove_class_on_scroll = () => header.classList.remove("scroll");
+
+    const add_class_on_hover = () => header.classList.add("hover");
+    const remove_class_on_hover = () => header.classList.remove("hover");
+
+    const check_scroll_position = () => {
+        scrollpos = window.scrollY;
+        if (scrollpos >= 80) {
+            add_class_on_scroll();
+        } else {
+            remove_class_on_scroll();
+        }
+    };
+
+    // Add or remove class based on scroll position
+    window.addEventListener("scroll", check_scroll_position);
+
+    // Add class on hover
+    navItems.forEach((item) => {
+        item.addEventListener("mouseenter", add_class_on_hover);
+        item.addEventListener("mouseleave", remove_class_on_hover);
+    });
+
+    // Add class on click
+    // navItems.forEach((item) => {
+    // 	item.addEventListener("click", add_class_on_hover);
+    // });
+
+    // Add class on hover
+    navSubItems.forEach((item) => {
+        item.addEventListener("mouseenter", add_class_on_hover);
+        item.addEventListener("mouseleave", remove_class_on_hover);
+    });
+
+    // Add class on click
+    navSubItems.forEach((item) => {
+        item.addEventListener("click", add_class_on_hover);
+    });
+    // Initial check when the page loads
+    document.addEventListener("DOMContentLoaded", check_scroll_position);
+    window.addEventListener("scroll", check_scroll_position);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const dropdownButton = document.getElementById("dropdown-button");
+
+        if (dropdownButton) {
+            dropdownButton.addEventListener("click", () => {
+                document.body.classList.toggle("dropdown-open");
+            });
+        }
+    });
+
+    const menu = document.querySelector(".menu");
+    const menuMain = menu.querySelector(".menu-main");
+    const goBack = menu.querySelector(".go-back");
+    const menuTrigger = document.querySelector(".mobile-menu-trigger");
+    const closeMenu = menu.querySelector(".mobile-menu-close");
+    let subMenu;
+    menuMain.addEventListener("click", (e) => {
+        if (!menu.classList.contains("active")) {
+            return;
+        }
+        if (e.target.closest(".menu-item-has-children")) {
+            const hasChildren = e.target.closest(".menu-item-has-children");
+            showSubMenu(hasChildren);
+        }
+    });
+    goBack.addEventListener("click", () => {
+        hideSubMenu();
+    });
+    menuTrigger.addEventListener("click", () => {
+        toggleMenu();
+    });
+    closeMenu.addEventListener("click", () => {
+        toggleMenu();
+    });
+    document.querySelector(".menu-overlay").addEventListener("click", () => {
+        toggleMenu();
+    });
+    function toggleMenu() {
+        menu.classList.toggle("active");
+        document.querySelector(".menu-overlay").classList.toggle("active");
+    }
+    function showSubMenu(hasChildren) {
+        subMenu = hasChildren.querySelector(".sub-menu");
+        subMenu.classList.add("active");
+        subMenu.style.animation = "slideLeft 0.5s ease forwards";
+        const menuTitle =
+            hasChildren.querySelector(".chevronDown").parentNode.childNodes[0].textContent;
+        menu.querySelector(".current-menu-title").innerHTML = menuTitle;
+        menu.querySelector(".mobile-menu-head").classList.add("active");
+    }
+
+    function hideSubMenu() {
+        subMenu.style.animation = "slideRight 0.5s ease forwards";
+        setTimeout(() => {
+            subMenu.classList.remove("active");
+        }, 300);
+        menu.querySelector(".current-menu-title").innerHTML = "";
+        menu.querySelector(".mobile-menu-head").classList.remove("active");
+    }
+
+    window.onresize = function () {
+        if (this.innerWidth > 991) {
+            if (menu.classList.contains("active")) {
+                toggleMenu();
+            }
+        }
+    };
+
+</script>
+
+<script defer>
+    function updateLogoWidth() {
+        // Select elements
+        const ctaElement = document.querySelector('.item-right');
+        const logoElement = document.querySelector('.item-left');
+
+        // Get the computed width of CTA
+        const ctaWidth = ctaElement.getBoundingClientRect().width;
+        console.log('CTA width:', ctaWidth);
+
+        // Apply the width to logo element
+        if (ctaWidth > 0) {
+            logoElement.style.width = `${ctaWidth}px`;
+        }
+    }
+
+    // Run on page load with a slight delay to ensure styles are applied
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(updateLogoWidth, 100);
+    });
+
+    // Run whenever window is resized
+    window.addEventListener('resize', updateLogoWidth);
+</script>

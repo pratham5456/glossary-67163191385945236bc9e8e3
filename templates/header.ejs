@@ -1,0 +1,42 @@
+<header class="header group" id="main-header">
+    <div class="navigation">
+        <div class="header-item item-left">
+            <div class="logo"><a href="<%= logoLink %>"><img src="<%= logoImgUrl %>" height="40" /></a></div>
+        </div>
+
+        <div class="header-item item-center">
+            <div class="menu-overlay"></div>
+            <nav class="menu">
+                <div class="mobile-menu-head">
+                    <div class="go-back">
+                        &lt;
+                    </div>
+                    <div class="current-menu-title"></div>
+                    <div class="mobile-menu-close">&times;</div>
+                </div>
+                <ul class="menu-main">
+                    <li>
+                        <a href="<%= homeLink %>">Home</a>
+                    </li>
+                    <li>
+                        <a href="<%= ctaLink %>" class="btn btn-primary show-in-mobile demo-btn">
+                            <%= ctaText %>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="header-item item-right nav-right">
+            <a href="<%= ctaLink %>" class="btn btn-ghost dark hide-in-mobile">
+                <%= ctaText %>
+            </a>
+            <div class="mobile-menu-trigger">
+                <span></span>
+            </div>
+        </div>
+
+
+
+    </div>
+</header>

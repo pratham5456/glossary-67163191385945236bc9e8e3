@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= portalTitle %>
+    </title>
+
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+    <%- include('/head.ejs') %>
+</head>
+
+<body>
+    <%- include("/header.ejs") %>
+        <main class="homeMain">
+            <section class="hero">
+                <div>
+                    <div class="title header">
+                        <h1>
+                            <%= portalHeading %>
+                        </h1>
+                        <p>
+                            <%= portalDescription %>
+                        </p>
+
+                        <div class="search" id="search-container">
+                            <input type="search" id="search-input" placeholder="<%= searchPlaceholder %>">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page-content" id="content">
+                <% if (isAlphabetical) { %>
+                    <nav class="alphabet-nav">
+                        <% data.forEach(function(category) { %>
+                            <a
+                                href="#category-<%= category.categoryName === '#' ? 'numeric' : category.categoryName %>">
+                                <%= category.categoryName %>
+                            </a>
+                            <% }); %>
+                    </nav>
+                    <div class="content">
+                        <div class="page-content-inner">
+                            <div class=" pattern-page">
+                                <% data.forEach(function(category) { %>
+                                    <div id="category-<%= category.categoryName === '#' ? 'numeric' : category.categoryName %>"
+                                        class="category-section">
+                                        <h2>
+                                            <%= category.categoryName==='#' ? 'Numbers' : category.categoryName %>
+                                        </h2>
+                                        <ul class="listing">
+                                            <% category.pages.forEach(function(page) { %>
+                                                <li><a href="<%= page.slug %>">
+                                                        <%= page.pageTitle %>
+                                                    </a></li>
+                                                <% }); %>
+                                        </ul>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <% } else if (showCategories) { %>
+                        <div class="content">
+                            <div class="page-content-inner">
+                                <% data.forEach(function(category) { %>
+                                    <div class="category-section">
+                                        <div class="category-header">
+                                            <h2>
+                                                <%= category.categoryName %>
+                                            </h2>
+                                            <% if (category.pages.length> 6) { %>
+                                                <a href="<%= category.categorySlug %>">View more --&gt;</a>
+                                                <% } %>
+                                        </div>
+                                        <div class="card-wrap">
+                                            <div class="category-list">
+                                                <ul>
+                                                    <% category.pages.slice(0, 6).forEach(function(page) { %>
+                                                        <li class="card padding shadow rounded">
+                                                            <a href="<%= page.slug %>">
+                                                                <%= page.pageTitle %>
+                                                            </a>
+                                                        </li>
+                                                        <% }); %>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                        <% } else if (data.length> 0 && data[0].pages.length > 0) { %>
+                            <div class="content">
+                                <div class="page-content-inner">
+                                    <ul class="listing">
+                                        <% data[0].pages.forEach(function(page) { %>
+                                            <li><a href="<%= page.slug %>">
+                                                    <%= page.pageTitle %>
+                                                </a></li>
+                                            <% }); %>
+                                    </ul>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <div class="content">
+                                    <div class="page-content-inner">
+                                        <p>No content available.</p>
+                                    </div>
+                                </div>
+                                <% } %>
+            </section>
+
+            <section class="search-result" id="search-results-wrap">
+                <div>
+                    <div id="search-results"></div>
+                </div>
+            </section>
+        </main>
+        <%- include("/footer.ejs") %>
+            <script>
+                // Prepare data for Fuse.js
+                const searchData = [
+            <% data.forEach(function (category) { %>
+                <% category.pages.forEach(function (page) { %>
+                {
+                    title: '<%= page.pageTitle %>',
+                    category: '<%= category.categoryName %>',
+                    url: '<%= page.slug %>',
+                    content: '<%= page.pageDescription %>'
+                },
+                <% }); %>
+            <% }); %>
+        ];
+
+                // Initialize Fuse with the search data
+                const fuse = new Fuse(searchData, {
+                    keys: ['title', 'category', 'content'],
+                    threshold: 0.3,
+                    includeScore: true
+                });
+
+                // Search functionality
+                const searchInput = document.getElementById('search-input');
+                const searchResults = document.getElementById('search-results');
+                const content = document.getElementById('content');
+                let searchResultsWrap = document.getElementById('search-results-wrap');
+                searchInput.addEventListener('input', function () {
+                    const query = this.value;
+                    if (query.length > 1) {
+                        const results = fuse.search(query);
+                        displayResults(results);
+                    } else {
+                        searchResults.innerHTML = '';
+                        content.style.display = 'flex';
+                        searchResultsWrap.style.display = 'none';
+                    }
+                });
+
+                function displayResults(results) {
+                    if (results.length === 0) {
+                        searchResults.innerHTML = '<p>No results found.</p>';
+                        content.style.display = 'none';
+                        return;
+                    }
+
+                    let html = '<div class="category-section"><div class="category-header"><h2>Result</h2></div><div class="card-wrap"><div class="category-list"><ul>';
+                    results.forEach(result => {
+                        html += `<li class="card padding shadow rounded"><a href="${result.item.url}">${result.item.title} </a>(${result.item.category})</li>`;
+                    });
+                    html += '</ul></div></div></div > ';
+
+                    searchResults.innerHTML = html;
+                    content.style.display = 'none';
+                    searchResultsWrap.style.display = 'block';
+                }
+
+                // Smooth scrolling for alphabet navigation
+                document.querySelectorAll('.alphabet-nav a').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+            </script>
+</body>
+
+</html>

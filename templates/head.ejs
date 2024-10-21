@@ -1,0 +1,34 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+    <%= portalTitle %>
+</title>
+<link rel="icon" type="image/x-icon" href="<%= faviconUrl %>">
+<% if (fonts && fonts.length> 0) { %>
+    <% fonts.forEach(function(font) { %>
+        <link
+            href="https://fonts.googleapis.com/css2?family=<%= font.family.replace(/ /g, '+') %>:wght@<%= font.weights.join(';') %>&display=swap"
+            rel="stylesheet">
+        <% }); %>
+            <% } %>
+                <link rel="stylesheet" type="text/css" media="screen" href="https://gracker-prod.sfo3.cdn.digitaloceanspaces.com/public/style.min.css">
+                <link rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+                <!-- and it's easy to individually load additional languages -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+                <script>hljs.highlightAll();</script>
+
+                <style>
+                    :root {
+                        --primary-color: <%=theme.primaryColor %>;
+                        --secondary-color: <%=theme.secondaryColor %>;
+                        --background-color: <%=theme.backgroundColor %>;
+                        --text-color: <%=theme.textColor %>;
+                        --accent-color: <%=theme.accentColor %>;
+                        --font-primary: <%=fonts[0].family %>, Arial, sans-serif;
+                        --font-secondary: <%=fonts[1] ? fonts[1].family: fonts[0].family %>, Arial, sans-serif;
+                    }
+                </style>

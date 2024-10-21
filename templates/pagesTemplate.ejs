@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pagesTitle.prefix %>
+            <%= pageTitle %>
+                <%= pagesTitle.suffix %>
+    </title>
+    <meta name="description" content="<%= metaDescription %>">
+    <%- include('/head.ejs') %>
+</head>
+
+<body>
+    <%- include("/header.ejs") %>
+        <main class="homeMainInner">
+            <section class="hero">
+                <div>
+                    <ul class="breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li class="seprator">/</li>
+                        <li class="seprator">/</li>
+                        <li>
+                            <%= pageHeading %>
+                        </li>
+                    </ul>
+                    <div class="title header">
+                        <h1>
+                            <%= pageHeading %>
+                        </h1>
+                    </div>
+                </div>
+            </section>
+            <section class="category-section page-content">
+                <div class="content has-space">
+                    <p>
+                        <%= pageDescription %>
+                    </p>
+                    <% pageContentBlocks.forEach(function(block) { %>
+                        <%- block %>
+                            <% }); %>
+                </div>
+            </section>
+
+            <% if (typeof additionOptionalFields !=='undefined' ) { %>
+                <div class="additional-content">
+                    <% for (const [fieldName, fieldData] of Object.entries(additionOptionalFields)) { %>
+                        <% if (fieldData.type==='image' ) { %>
+                            <img src="<%= fieldData.value %>" alt="<%= fieldName %>">
+                            <% } else if (['h1', 'h2' , 'h3' , 'h4' ].includes(fieldData.type)) { %>
+                                <<%= fieldData.type %>><%= fieldData.value %>
+                                </<%= fieldData.type %>>
+                                <% } else if (fieldData.type==='p' ) { %>
+                                    <p>
+                                        <%= fieldData.value %>
+                                    </p>
+                                    <% } else if (fieldData.type==='strong' ) { %>
+                                        <strong>
+                                            <%= fieldData.value %>
+                                        </strong>
+                                        <% } else if (fieldData.type==='a' ) { %>
+                                            <a href="<%= fieldData.value %>">
+                                                <%= fieldName %>
+                                            </a>
+                                            <% } %>
+                                                <% } %>
+                </div>
+                <% } %>
+
+
+        </main>
+        <script>
+            // Get all h2 elements
+            const h2Elements = document.querySelectorAll('h2');
+
+            // Loop through the h2 elements and find the one with the text 'References'
+            h2Elements.forEach(h2 => {
+                if (h2.textContent.trim() === 'References') {
+                    // Get the next sibling element, which should be the ul
+                    const nextElement = h2.nextElementSibling;
+
+                    // Check if the next element is a ul
+                    if (nextElement && nextElement.tagName === 'UL') {
+                        // Get all anchor tags inside the ul and add target="_blank"
+                        const anchorTags = nextElement.querySelectorAll('a');
+                        anchorTags.forEach(anchor => {
+                            anchor.setAttribute('target', '_blank');
+                        });
+                    }
+                }
+            });
+        </script>
+        <%- include("/footer.ejs") %>
+</body>
+
+</html>
